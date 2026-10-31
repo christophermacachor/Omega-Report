@@ -1,32 +1,329 @@
-# Omega Prime
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omega Prime — Christopher Macachor's Cross-Domain Framework</title>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)'], ['$', '$']],
+      displayMath: [['\\[', '\\]'], ['$$', '$$']]
+    },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-raised: #1a1a1a;
+    --border: #2a2a2a;
+    --border-accent: #3a3a3a;
+    --text: #e8e8e8;
+    --text-muted: #b8b8b8;
+    --text-dim: #6a6a6a;
+    --accent-gold: #c8a04e;
+    --accent-gold-soft: #e8c97a;
+    --accent-fact: #4a8c5c;
+    --accent-open: #c9a227;
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    --serif: 'Georgia', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --radius: 2px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.75;
+    padding: 0 1.5rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 780px; margin: 0 auto; padding-top: 3.5rem; }
 
-From the outside, the first thing that stands out about Christopher Macachor’s work is not the ambition. Ambition is common. What stands out is the **architecture of accountability** around the ambition. Across the archive and the eleven project sites, Macachor has built a cross-domain framework that does something rare: it carries a single invariant — call it **Ω′**, the object the archive identifies with the Macachor Absolute, \(\mathfrak M=(\sqrt5-1)/2\), together with its geometric companion \(c=-1/3\) — while insisting that every claim attached to Ω′ declare its own evidential grade. That is the mark of a serious investigator, and it is the reason the work deserves sustained attention.
+  /* Top navigation strip */
+  .topnav {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+  }
+  .topnav a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .topnav a:hover { color: var(--accent-gold); }
+  .topnav .sep { color: var(--border-accent); }
 
-## The self-auditing archive
+  /* Article header */
+  .article-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .article-header h1 {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+  }
+  .article-header .lede {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-style: italic;
+  }
 
-Most unified theories are defended. Macachor’s is audited.
+  /* Article body */
+  .article-body h2 {
+    font-family: var(--serif);
+    font-size: 1.65rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+  .article-body h2:first-child { margin-top: 0; }
 
-The v10 status ledger is the clearest evidence. It does not present the framework as a finished revelation. It sorts every claim into explicit bins: **derived, conditional, imported, provisional, withdrawn.** It records that the face-sharing screw-pitch claim is withdrawn. It records that the 2:1 ratio claim is withdrawn. It records that the admissible period set is provisional and not certified exhaustive. It records that L4 is conditional on an unproven premise P1, and that L5 fails Test B. It distinguishes “consistent” from “confirming” at Layer 6 and explicitly notes that no scale directly tests \(c\), \(\theta_0\), or the period set.
+  .article-body p {
+    margin-bottom: 1.35rem;
+    color: var(--text);
+  }
+  .article-body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .article-body em { color: var(--text-muted); }
+  .article-body a {
+    color: var(--accent-gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(200,160,78,0.4);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .article-body a:hover {
+    color: var(--accent-gold-soft);
+    border-bottom-color: var(--accent-gold-soft);
+  }
+  .article-body ul {
+    margin: 0 0 1.35rem 1.5rem;
+    color: var(--text);
+  }
+  .article-body li {
+    margin-bottom: 0.6rem;
+    padding-left: 0.25rem;
+  }
 
-This is unusual. In the history of unified theories — from Kepler’s nested solids to Einstein’s cosmological constant to string theory’s landscape — the characteristic failure mode is retention of the elegant claim after the evidence has thinned. Macachor’s archive does the opposite. It retires claims. It labels imports as imports. It leaves a withdrawal log. The archive is engineered to be correctable by its author, and that is the single most important property a speculative system can have. Omega Prime, whatever else it is, is pursued in a way that permits Omega Prime to be wrong.
+  /* Blockquote */
+  .article-body blockquote {
+    background: #000;
+    border-left: 3px solid var(--accent-gold);
+    padding: 1.5rem 1.75rem;
+    margin: 1.75rem 0;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--text-muted);
+    border-radius: var(--radius);
+  }
+  .article-body blockquote p {
+    margin-bottom: 0;
+    color: var(--text-muted);
+  }
 
-## Pre-registration as a habit
+  /* Omega symbol highlight in text */
+  .omega {
+    color: var(--accent-gold);
+    font-weight: 600;
+  }
 
-The Clay Remembers proposal is the strongest methodological artifact in the set. Before any measurement has been made, it fixes three numeric thresholds:
+  /* Display math */
+  .article-body .math-display {
+    margin: 1.75rem 0;
+    padding: 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+    overflow-x: auto;
+  }
 
-- **E1** lattice strain: \(\Delta a/a_0 \ge 5\times 10^{-7}\)
-- **E2** hydrostatic NMR: primary peak shift \(\ge 5\%\), secondary peak \(T_2 < 50\) ms at \(\ge 3\%\) area, \(\tau \ge 12\) h
-- **E3** scalar packing: RDF peaks at \(r/a = 1.0, 1.73, 2.65\), distinguishable from FCC/HCP
+  /* Equation on "c = -1/3" */
+  .article-body mjx-container[display="true"] {
+    margin: 1.75rem 0 !important;
+  }
 
-This is pre-registration in the strict sense: the falsifiers are frozen before the data exist. The page explicitly distances itself from the earlier “scalar-encoded” hype and cites the audit that dismantled it. It demands “no ad hoc adjustments, no narrative defense without raw data.”
+  /* Final boxed statement */
+  .final-box {
+    background: #000;
+    border: 1px solid var(--accent-gold);
+    padding: 2rem 2.25rem;
+    margin: 3rem 0 2rem;
+    border-radius: var(--radius);
+    text-align: center;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--accent-gold);
+    line-height: 1.6;
+    font-style: italic;
+  }
 
-The star site does the same thing in atmospheric physics: **F4** (tornado \(J(r_c)\) validation), **F7** (agreement with independently measured \(|\zeta|\) and CAPE within 50%), **F8** (temporal consistency between 22:00 and 23:00), declared in advance, with Layer 4 marked **IN PROGRESS** because the ERA5 retrieval has not been run.
+  /* Closing line */
+  .closing-line {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    margin-top: 2rem;
+  }
 
-Whether or not these thresholds are ever met, the habit of declaring them first is a genuine contribution to how speculative systems should be investigated. It converts a metaphysical claim into a measurable one and accepts the risk of refutation. Most frameworks never get that far. Omega Prime is being asked to survive contact with data, not merely with admiration.
+  /* Site links section */
+  .site-links {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .site-links h2 {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+  }
+  .site-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0.75rem 2rem;
+  }
+  .site-links li {
+    margin: 0;
+    padding: 0;
+  }
+  .site-links a {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: block;
+    padding: 0.4rem 0;
+    border-bottom: 1px dotted var(--border);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .site-links a:hover {
+    color: var(--accent-gold);
+    border-bottom-color: var(--accent-gold);
+  }
+  .site-links a .num {
+    color: var(--text-dim);
+    margin-right: 0.5rem;
+    font-size: 0.7rem;
+  }
 
-## A real geometric core
+  /* Footer */
+  .site-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    line-height: 1.9;
+    text-align: center;
+  }
+  .site-footer a { color: var(--text-muted); text-decoration: none; }
+  .site-footer a:hover { color: var(--accent-gold); }
 
-The L1–L3 derivation is not mysticism. It is elementary linear algebra:
+  @media (max-width: 720px) {
+    body { padding: 0 1rem 4rem; font-size: 17px; line-height: 1.7; }
+    .container { padding-top: 2rem; }
+    .article-header h1 { font-size: 2.1rem; }
+    .article-header .lede { font-size: 1rem; }
+    .article-body h2 { font-size: 1.35rem; margin-top: 2.25rem; }
+    .article-body blockquote { padding: 1.25rem 1.25rem; font-size: 1rem; }
+    .final-box { padding: 1.5rem; font-size: 1rem; }
+    .topnav { font-size: 0.65rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav class="topnav">
+  <a href="https://fragmentedworld.macachor.org/" target="_blank" rel="noopener">fragmentedworld</a>
+  <span class="sep">·</span>
+  <a href="https://scientificbeliefsystems.macachor.org/" target="_blank" rel="noopener">scientificbeliefsystems</a>
+  <span class="sep">·</span>
+  <a href="https://tollbooth.macachor.org/" target="_blank" rel="noopener">tollbooth</a>
+  <span class="sep">·</span>
+  <a href="https://star.macachor.org/" target="_blank" rel="noopener">star</a>
+  <span class="sep">·</span>
+  <a href="https://scalar.macachor.org/" target="_blank" rel="noopener">scalar</a>
+  <span class="sep">·</span>
+  <a href="https://clayremembers.macachor.org/" target="_blank" rel="noopener">clayremembers</a>
+  <span class="sep">·</span>
+  <a href="https://torroid.macachor.org/" target="_blank" rel="noopener">torroid</a>
+  <span class="sep">·</span>
+  <a href="https://doi.org/10.5281/zenodo.22854537" target="_blank" rel="noopener">zenodo/22854537</a>
+</nav>
+
+<header class="article-header">
+  <h1>Omega Prime</h1>
+  <p class="lede">Christopher Macachor's cross-domain framework, and the architecture of accountability around it.</p>
+</header>
+
+<article class="article-body">
+
+<p>From the outside, the first thing that stands out about Christopher Macachor’s work is not the ambition. Ambition is common. What stands out is the <strong>architecture of accountability</strong> around the ambition. Across the archive and the eleven project sites, Macachor has built a cross-domain framework that does something rare: it carries a single invariant — call it <span class="omega">Ω′</span>, the object the archive identifies with the Macachor Absolute, \(\mathfrak M=(\sqrt5-1)/2\), together with its geometric companion \(c=-1/3\) — while insisting that every claim attached to <span class="omega">Ω′</span> declare its own evidential grade. That is the mark of a serious investigator, and it is the reason the work deserves sustained attention.</p>
+
+<h2>The self-auditing archive</h2>
+
+<p>Most unified theories are defended. Macachor’s is audited.</p>
+
+<p>The v10 status ledger is the clearest evidence. It does not present the framework as a finished revelation. It sorts every claim into explicit bins: <strong>derived, conditional, imported, provisional, withdrawn.</strong> It records that the face-sharing screw-pitch claim is withdrawn. It records that the 2:1 ratio claim is withdrawn. It records that the admissible period set is provisional and not certified exhaustive. It records that L4 is conditional on an unproven premise P1, and that L5 fails Test B. It distinguishes “consistent” from “confirming” at Layer 6 and explicitly notes that no scale directly tests \(c\), \(\theta_0\), or the period set.</p>
+
+<p>This is unusual. In the history of unified theories — from Kepler’s nested solids to Einstein’s cosmological constant to string theory’s landscape — the characteristic failure mode is retention of the elegant claim after the evidence has thinned. Macachor’s archive does the opposite. It retires claims. It labels imports as imports. It leaves a withdrawal log. The archive is engineered to be correctable by its author, and that is the single most important property a speculative system can have. Omega Prime, whatever else it is, is pursued in a way that permits Omega Prime to be wrong.</p>
+
+<h2>Pre-registration as a habit</h2>
+
+<p>The Clay Remembers proposal is the strongest methodological artifact in the set. Before any measurement has been made, it fixes three numeric thresholds:</p>
+
+<ul>
+  <li><strong>E1</strong> lattice strain: \(\Delta a/a_0 \ge 5\times 10^{-7}\)</li>
+  <li><strong>E2</strong> hydrostatic NMR: primary peak shift \(\ge 5\%\), secondary peak \(T_2 < 50\) ms at \(\ge 3\%\) area, \(\tau \ge 12\) h</li>
+  <li><strong>E3</strong> scalar packing: RDF peaks at \(r/a = 1.0, 1.73, 2.65\), distinguishable from FCC/HCP</li>
+</ul>
+
+<p>This is pre-registration in the strict sense: the falsifiers are frozen before the data exist. The page explicitly distances itself from the earlier “scalar-encoded” hype and cites the audit that dismantled it. It demands “no ad hoc adjustments, no narrative defense without raw data.”</p>
+
+<p>The star site does the same thing in atmospheric physics: <strong>F4</strong> (tornado \(J(r_c)\) validation), <strong>F7</strong> (agreement with independently measured \(|\zeta|\) and CAPE within 50%), <strong>F8</strong> (temporal consistency between 22:00 and 23:00), declared in advance, with Layer 4 marked <strong>IN PROGRESS</strong> because the ERA5 retrieval has not been run.</p>
+
+<p>Whether or not these thresholds are ever met, the habit of declaring them first is a genuine contribution to how speculative systems should be investigated. It converts a metaphysical claim into a measurable one and accepts the risk of refutation. Most frameworks never get that far. Omega Prime is being asked to survive contact with data, not merely with admiration.</p>
+
+<h2>A real geometric core</h2>
+
+<p>The L1–L3 derivation is not mysticism. It is elementary linear algebra:</p>
 
 \[
 c=-\frac13 \quad\Longrightarrow\quad
@@ -35,79 +332,112 @@ c=-\frac13 \quad\Longrightarrow\quad
 \arccos(\sqrt{2/3})=35.2644^\circ.
 \]
 
-The Gram matrix of four unit vectors in mutual equilibrium forces \(c=-1/3\), and the tetrahedral angles follow. This is checkable on a napkin. It is the kind of compact, derivable structure that makes a framework teachable — a student can verify the core in an afternoon and then ask the hard questions.
+<p>The Gram matrix of four unit vectors in mutual equilibrium forces \(c=-1/3\), and the tetrahedral angles follow. This is checkable on a napkin. It is the kind of compact, derivable structure that makes a framework teachable — a student can verify the core in an afternoon and then ask the hard questions.</p>
 
-The scalar constants are equally exact:
+<p>The scalar constants are equally exact:</p>
+
 \[
 \mathfrak M=\frac{\sqrt5-1}{2},\qquad \varphi=\frac1{\mathfrak M},\qquad 360^\circ(1-\mathfrak M)=137.5078^\circ.
 \]
 
-The framework’s honesty about what is derived versus imported — the tetrahelix pitch, the quanta modules, the 120 LCD triangle are attributed to *Synergetics*, not claimed as derivations — is precisely what a serious synthetic program should do. It gives credit, it marks its debts, and it leaves a clean audit trail for anyone who wants to check the arithmetic. Omega Prime, as a geometric object, is presented in a form that can be independently recomputed.
+<p>The framework’s honesty about what is derived versus imported — the tetrahelix pitch, the quanta modules, the 120 LCD triangle are attributed to <em>Synergetics</em>, not claimed as derivations — is precisely what a serious synthetic program should do. It gives credit, it marks its debts, and it leaves a clean audit trail for anyone who wants to check the arithmetic. Omega Prime, as a geometric object, is presented in a form that can be independently recomputed.</p>
 
-## The Placeholder Law
+<h2>The Placeholder Law</h2>
 
-The “scientific belief systems” layer introduces a normative epistemology that stands on its own, independent of the scalar ontology. The Placeholder Law can be restated as a working rule:
+<p>The “scientific belief systems” layer introduces a normative epistemology that stands on its own, independent of the scalar ontology. The Placeholder Law can be restated as a working rule:</p>
 
-> A mathematical object is legitimate when it points toward a referent it does not replace. When it is used backward — to generate, measure, or constitute the referent — it produces an interference artifact that is then mistaken for the territory.
+<blockquote>
+  <p>A mathematical object is legitimate when it points toward a referent it does not replace. When it is used backward — to generate, measure, or constitute the referent — it produces an interference artifact that is then mistaken for the territory.</p>
+</blockquote>
 
-Whether or not one accepts the revisionist history of Heaviside and Einstein, the diagnostic itself is a useful instrument. It names a real failure mode in mathematical physics: the reification of a coordinate, a metric, or a Lagrangian into a substance. Philosophers of science have made versions of this point — map–territory, model-dependent realism, the reification of gauge — but Macachor’s formulation is sharp, memorable, and operational. It comes with a test: if removing the top level of a placeholder stack collapses the meaning of the lower levels, the top was functioning as a pseudo-substrate.
+<p>Whether or not one accepts the revisionist history of Heaviside and Einstein, the diagnostic itself is a useful instrument. It names a real failure mode in mathematical physics: the reification of a coordinate, a metric, or a Lagrangian into a substance. Philosophers of science have made versions of this point — map–territory, model-dependent realism, the reification of gauge — but Macachor’s formulation is sharp, memorable, and operational. It comes with a test: if removing the top level of a placeholder stack collapses the meaning of the lower levels, the top was functioning as a pseudo-substrate.</p>
 
-That test can be applied to frameworks other than Einstein’s. It is a contribution to how we think about thought — systems of calculation and cognition that know the difference between Ω′ and the notation used to point at it.
+<p>That test can be applied to frameworks other than Einstein’s. It is a contribution to how we think about thought — systems of calculation and cognition that know the difference between <span class="omega">Ω′</span> and the notation used to point at it.</p>
 
-## Cross-domain ambition with scale discipline
+<h2>Cross-domain ambition with scale discipline</h2>
 
-The polymath claim is easy to mock and hard to do. Macachor’s version has a structural feature that distinguishes it from mere eclecticism: it is a single invariant carried across scales, with a stated status at each scale.
+<p>The polymath claim is easy to mock and hard to do. Macachor’s version has a structural feature that distinguishes it from mere eclecticism: it is a single invariant carried across scales, with a stated status at each scale.</p>
 
-- atomic: \(\beta\)-Mn tetrahelix periodicity — partially tests a numeric prediction
-- molecular: H-bond local field — consistent
-- genomic: CTCF chirality — consistent
-- neural: grid-cell fixed distance — interpretive overlay
-- perceptual: the Acoustic Bridge — first-person, explicitly labeled
-- archaeometric: clay memory — pre-registered, unmeasured
-- atmospheric: Φ669 scalar field — falsifiers declared, Layer 4 in progress
+<ul>
+  <li>atomic: \(\beta\)-Mn tetrahelix periodicity — partially tests a numeric prediction</li>
+  <li>molecular: H-bond local field — consistent</li>
+  <li>genomic: CTCF chirality — consistent</li>
+  <li>neural: grid-cell fixed distance — interpretive overlay</li>
+  <li>perceptual: the Acoustic Bridge — first-person, explicitly labeled</li>
+  <li>archaeometric: clay memory — pre-registered, unmeasured</li>
+  <li>atmospheric: Φ669 scalar field — falsifiers declared, Layer 4 in progress</li>
+</ul>
 
-The key virtue is that the scales are not blended into a single triumphant claim. Each carries its own evidence grade. The v10 page explicitly says Layer 6 is “consistent, not confirming,” and that the 4D mirror is “interpretive and does no derivational work.” That is a rare form of intellectual bookkeeping: the ambition is maximal, but the accounting is conservative.
+<p>The key virtue is that the scales are not blended into a single triumphant claim. Each carries its own evidence grade. The v10 page explicitly says Layer 6 is “consistent, not confirming,” and that the 4D mirror is “interpretive and does no derivational work.” That is a rare form of intellectual bookkeeping: the ambition is maximal, but the accounting is conservative.</p>
 
-The framework’s own self-scoring rubric — \(P=0.30B+0.40D+0.30I\), with a pre-declared falsifier freeze date and a \(\Delta\le 0.5\) tolerance — is itself an innovation in how to score a polymathic claim. Even granting that the current score is a self-replication pass with independence pending, the design of the rubric is a contribution: it makes the polymath claim auditable rather than rhetorical. Omega Prime is scored, not merely asserted.
+<p>The framework’s own self-scoring rubric — \(P=0.30B+0.40D+0.30I\), with a pre-declared falsifier freeze date and a \(\Delta\le 0.5\) tolerance — is itself an innovation in how to score a polymathic claim. Even granting that the current score is a self-replication pass with independence pending, the design of the rubric is a contribution: it makes the polymath claim auditable rather than rhetorical. Omega Prime is scored, not merely asserted.</p>
 
-## What the framework contributes to the study of reality
+<h2>What the framework contributes to the study of reality</h2>
 
-Setting aside the question of physical truth, the work contributes four things to the investigation of reality:
+<p>Setting aside the question of physical truth, the work contributes four things to the investigation of reality:</p>
 
-1. **A model of self-auditing synthesis.** The status ledger, the withdrawal log, and the derived/imported distinction together show how a large speculative system can be kept honest by its own author. This is transferable to any cross-domain program.
+<ol>
+  <li><strong>A model of self-auditing synthesis.</strong> The status ledger, the withdrawal log, and the derived/imported distinction together show how a large speculative system can be kept honest by its own author. This is transferable to any cross-domain program.</li>
+  <li><strong>A pre-registration culture for speculative physics.</strong> The E1–E3 and F4/F7/F8 thresholds demonstrate that even a metaphysical-sounding framework can commit to numbers before measurement. That is a template.</li>
+  <li><strong>A sharp diagnostic for reification.</strong> The Placeholder Law gives philosophers and physicists a memorable, testable rule for distinguishing a map from a territory.</li>
+  <li><strong>A concrete, falsifiable archaeometric hypothesis.</strong> The Clay Remembers proposal is the first part of the framework that can be wrong in a measurable way. That is the transition from speculation to science, and it should be recognized as such.</li>
+</ol>
 
-2. **A pre-registration culture for speculative physics.** The E1–E3 and F4/F7/F8 thresholds demonstrate that even a metaphysical-sounding framework can commit to numbers before measurement. That is a template.
+<p>None of these require accepting <span class="omega">Ω′</span> as fundamental. They are contributions to method — to how systems of thought about reality should be calculated, revised, and held accountable.</p>
 
-3. **A sharp diagnostic for reification.** The Placeholder Law gives philosophers and physicists a memorable, testable rule for distinguishing a map from a territory.
+<h2>The honest limits, stated as an invitation</h2>
 
-4. **A concrete, falsifiable archaeometric hypothesis.** The Clay Remembers proposal is the first part of the framework that can be wrong in a measurable way. That is the transition from speculation to science, and it should be recognized as such.
+<p>The archive’s own status statement is the right one, and it deserves to be quoted in any fair assessment:</p>
 
-None of these require accepting Ω′ as fundamental. They are contributions to method — to how systems of thought about reality should be calculated, revised, and held accountable.
+<blockquote>
+  <p><strong>“L1–L3 derived; L4 conditional on P1; L5 specified but open (Test B fails); L6 consistent, not confirming; polymath = self-replication pass, independence pending; the territory remains unventured.”</strong></p>
+</blockquote>
 
-## The honest limits, stated as an invitation
+<p>This is not a weakness of the work; it is the work’s most admirable sentence. A framework that can say “the territory remains unventured” about itself is a framework that has not confused its map for the ground. It is an invitation: close L5, prove P1, derive the period set, link <span class="omega">Ω′</span> to \(c=-1/3\), run E1–E3, execute F4/F7/F8, get a second scorer. Each of those is a concrete next step, not a rhetorical demand for belief.</p>
 
-The archive’s own status statement is the right one, and it deserves to be quoted in any fair assessment:
+<p>That is what a live research program looks like. It is unfinished, and it knows it is unfinished.</p>
 
-> **“L1–L3 derived; L4 conditional on P1; L5 specified but open (Test B fails); L6 consistent, not confirming; polymath = self-replication pass, independence pending; the territory remains unventured.”**
+<h2>The polymath question, reframed</h2>
 
-This is not a weakness of the work; it is the work’s most admirable sentence. A framework that can say “the territory remains unventured” about itself is a framework that has not confused its map for the ground. It is an invitation: close L5, prove P1, derive the period set, link Ω′ to \(c=-1/3\), run E1–E3, execute F4/F7/F8, get a second scorer. Each of those is a concrete next step, not a rhetorical demand for belief.
+<p>The polymath question, applied to Macachor, is not whether he has solved physics. It is whether he has built a system that integrates epistemology, geometry, dynamics, and empirical protocol under one auditable roof — and whether he has done so with a level of self-criticism that most unified theories never approach.</p>
 
-That is what a live research program looks like. It is unfinished, and it knows it is unfinished.
+<p>Breadth without discipline is dilettantism. Discipline without breadth is narrowness. Macachor’s archive is an attempt at disciplined breadth: six cited domains, a single invariant, a status for every claim, a withdrawal log, and pre-registered falsifiers. Whether <span class="omega">Ω′</span> is true is an empirical question that has not been answered. Whether the method of pursuing <span class="omega">Ω′</span> is worth emulating is a question that can be answered now, and the answer is yes.</p>
 
-## The polymath question, reframed
+<h2>Conclusion</h2>
 
-The polymath question, applied to Macachor, is not whether he has solved physics. It is whether he has built a system that integrates epistemology, geometry, dynamics, and empirical protocol under one auditable roof — and whether he has done so with a level of self-criticism that most unified theories never approach.
+<p>Christopher Macachor has produced something unusual: a grand unified framework that argues against its own grandiosity. It derives what it can, imports what it must, withdraws what fails, pre-registers what it cannot yet measure, and closes with the admission that the territory remains unventured. That combination — maximal ambition with maximal accounting — is exactly the temperament that the investigation of reality needs more of.</p>
 
-Breadth without discipline is dilettantism. Discipline without breadth is narrowness. Macachor’s archive is an attempt at disciplined breadth: six cited domains, a single invariant, a status for every claim, a withdrawal log, and pre-registered falsifiers. Whether Ω′ is true is an empirical question that has not been answered. Whether the method of pursuing Ω′ is worth emulating is a question that can be answered now, and the answer is yes.
+<p>The physics may or may not survive. The clay may or may not remember. The tetrahelical shell may or may not close. But the example — of a thinker who builds a cathedral of claims and then installs his own building inspector — is a contribution to how we should all be calculating, cognizing, and revising our maps of reality. That is the case, and it is a strong one.</p>
 
-## Conclusion
+<div class="final-box">
+  Omega Prime’s lasting contribution may be less the invariant than the discipline of holding an invariant accountable.
+</div>
 
-Christopher Macachor has produced something unusual: a grand unified framework that argues against its own grandiosity. It derives what it can, imports what it must, withdraws what fails, pre-registers what it cannot yet measure, and closes with the admission that the territory remains unventured. That combination — maximal ambition with maximal accounting — is exactly the temperament that the investigation of reality needs more of.
+<p class="closing-line">That is worth taking seriously, whatever the territory turns out to be.</p>
 
-The physics may or may not survive. The clay may or may not remember. The tetrahelical shell may or may not close. But the example — of a thinker who builds a cathedral of claims and then installs his own building inspector — is a contribution to how we should all be calculating, cognizing, and revising our maps of reality. That is the case, and it is a strong one.
+</article>
 
-\[
-\boxed{\text{Omega Prime’s lasting contribution may be less the invariant than the discipline of holding an invariant accountable.}}
-\]
+<!-- Site links -->
+<section class="site-links">
+  <h2>Macachor Project Sites</h2>
+  <ul>
+    <li><a href="https://fragmentedworld.macachor.org/" target="_blank" rel="noopener"><span class="num">01</span>The Fragmented World — archive</a></li>
+    <li><a href="https://scientificbeliefsystems.macachor.org/" target="_blank" rel="noopener"><span class="num">02</span>Scientific Belief Systems</a></li>
+    <li><a href="https://tollbooth.macachor.org/" target="_blank" rel="noopener"><span class="num">03</span>The Fragments of the Blade</a></li>
+    <li><a href="https://star.macachor.org/" target="_blank" rel="noopener"><span class="num">04</span>Φ669 Empirical Analysis</a></li>
+    <li><a href="https://scalar.macachor.org/" target="_blank" rel="noopener"><span class="num">05</span>Scalar Consciousness Research</a></li>
+    <li><a href="https://clayremembers.macachor.org/" target="_blank" rel="noopener"><span class="num">06</span>The Clay Remembers</a></li>
+    <li><a href="https://torroid.macachor.org/" target="_blank" rel="noopener"><span class="num">07</span>Twin Clifford Tori</a></li>
+    <li><a href="https://doi.org/10.5281/zenodo.22854537" target="_blank" rel="noopener"><span class="num">08</span>Zenodo — Scalar Resonance Harmonic Coupling</a></li>
+  </ul>
+</section>
 
-That is worth taking seriously, whatever the territory turns out to be.
+<footer class="site-footer">
+  <p><strong>Omega Prime</strong> · Christopher Macachor · ORCID <a href="https://orcid.org/0009-0008-0100-2856" target="_blank" rel="noopener">0009-0008-0100-2856</a></p>
+  <p>Macachor Absolute Scalar Research · 2026</p>
+  <p>L1–L3 derived · L4 conditional on P1 · L5 specified but open · L6 consistent, not confirming · the territory remains unventured</p>
+</footer>
+
+</div>
+</body>
+</html>
